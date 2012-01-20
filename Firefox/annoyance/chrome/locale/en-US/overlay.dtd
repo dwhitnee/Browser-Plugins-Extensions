@@ -1,0 +1,11 @@
+<!ENTITY annoyancehider.label "Hide This Annoyance">
+<!ENTITY annoyancehiderContext.label "Hide This Annoyance">
+<!ENTITY annoyancehiderContext.accesskey "H">
+
+
+
+<!ENTITY annoyancehiderToolbarButton.label "Your Toolbar Button">
+<!ENTITY annoyancehiderToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY annoyancehiderSidebar.label "Your Sidebar">
+<!ENTITY annoyancehiderToolbar.name  "example">
+<!ENTITY annoyancehiderToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &annoyancehiderToolbar.name;">

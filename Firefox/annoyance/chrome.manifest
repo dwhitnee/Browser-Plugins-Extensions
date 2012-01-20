@@ -1,0 +1,6 @@
+content   annoyancehider                 chrome/content/
+skin      annoyancehider   classic/1.0   chrome/skin/
+locale    annoyancehider   en-US         chrome/locale/en-US/
+
+
+overlay   chrome://browser/content/browser.xul   chrome://annoyancehider/content/ff-overlay.xul
