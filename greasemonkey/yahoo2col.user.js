@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          Fix My Yahoo Column widths 33/66gi
+// @name          Fix My Yahoo Column widths 33/66
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
-// @description   tv.com add episode list on main page
-// @include       http://my.yahoo.com/*
+// @description   Remove ad, and change to 2 column 33/66
+// @include       https://my.yahoo.com/*
 // ==/UserScript==
 
 //----------------------------------------
@@ -12,10 +12,11 @@
 // 2014, David Whitney
 //---------------------------------------- 
 
+
 var ad = document.getElementById("my-adsLREC");
 ad.style.display = "none";
 
 var columns = document.getElementsByClassName("myColumn");
 
 columns[0].style.width="33%";
-columns[1].style.width="100%";
+columns[1].style.width="67%";
