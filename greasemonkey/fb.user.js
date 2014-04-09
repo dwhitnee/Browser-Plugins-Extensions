@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Facebook de-tabletify
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
-// @description   Fix Facebook's tablet-centric layout
+// @description   Fix Facebook's tablet-centric layout to my liking
 // @include       https://www.facebook.com/*
 // ==/UserScript==
 
