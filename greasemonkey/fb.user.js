@@ -22,6 +22,8 @@
      addGlobalStyle('div#globalContainer { margin: 0; }');
      addGlobalStyle('div#contentArea { width: 90% !important; padding-left: 1em !important; }');
      addGlobalStyle('div.mbm { margin-bottom: 3em; }');
+
+     addGlobalStyle('div#globalContainer + div { display: none; }');
    }
 
    doOnLoad();
