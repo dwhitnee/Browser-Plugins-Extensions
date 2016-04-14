@@ -7,19 +7,20 @@
 
 (function() {
 
-   function removeAds() {
-     var ads = document.getElementsByClassName("ad");
-
-     for (var i=0; i < ads.length; i++) {
-       ads[i].style.setProperty("display", "none", "important");
-     }
-
-     console.log("NYT ads");
+   function addGlobalStyle(css) {
+     var head, style;
+     head = document.getElementsByTagName('head')[0];
+     if (!head) { return; }
+     style = document.createElement('style');
+     style.type = 'text/css';
+     style.innerHTML = css;
+     head.appendChild(style);
    }
 
-   // ads are added later, and only on display.
-   // hack to make a best attempt to get rid of the ads if scrolling happens.
-   setTimeout( removeAds, 5000 );
-   setTimeout( removeAds, 10000 );
+   function removeAds() {
+     addGlobalStyle('.ad { display: none !important; }');
+   }
+
+   removeAds();
 
 })();
