@@ -18,5 +18,6 @@
    }
 
    setTimeout( removeAds, 5000 );
+   setTimeout( removeAds, 10000 );
 
 })();
