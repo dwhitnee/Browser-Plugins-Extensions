@@ -7,11 +7,16 @@
 
 (function() {
 
-   var ads = document.getElementsByClassName("ad");
+   function removeAds() {
+     var ads = document.getElementsByClassName("ad");
 
-   for (var i=0; i < ads.length; i++) {
-     ads[i].style.setProperty("display", "none", "important");
+     for (var i=0; i < ads.length; i++) {
+       ads[i].style.setProperty("display", "none", "important");
+     }
+
+     console.log("NYT ads");
    }
 
-   console.log("NYT ads");
+   setTimeout( removeAds, 5000 );
+
 })();
