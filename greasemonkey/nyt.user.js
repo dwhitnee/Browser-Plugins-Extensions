@@ -17,6 +17,8 @@
      console.log("NYT ads");
    }
 
+   // ads are added later, and only on display.
+   // hack to make a best attempt to get rid of the ads if scrolling happens.
    setTimeout( removeAds, 5000 );
    setTimeout( removeAds, 10000 );
 
