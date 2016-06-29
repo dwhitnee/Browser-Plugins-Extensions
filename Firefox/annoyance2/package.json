@@ -8,6 +8,7 @@
   "engines": {
     "firefox": ">=38.0"
   },
+  "updateURL": "https://github.com/dwhitnee/Browser-Plugins-Extensions/blob/master/Firefox/annoyance2",
   "license": "MIT",
   "keywords": [
     "annoyance hider"
