@@ -3,6 +3,7 @@ Hides the selected HTML element with a right click.
 
 
 
+
 ##Development
 
 * To rebuild the XPI:
