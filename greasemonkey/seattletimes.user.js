@@ -18,8 +18,8 @@
    }
 
    function doOnLoad() {
-     addGlobalStyle('#toolbar { top: 0; }');
-     addGlobalStyle('#restHeightContainer { top: 4em; z-index: 1;}');
+     addGlobalStyle('div#toolbar { top: 0; }');
+     addGlobalStyle('div#restHeightContainer { top: 4em; z-index: 1;}');
    }
 
    doOnLoad();
