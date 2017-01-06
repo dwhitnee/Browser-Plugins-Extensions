@@ -3,6 +3,7 @@
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
 // @description   Fix Seattle Times layout to my liking
 // @include       http://digital.olivesoftware.com/Olive/ODN/SeattleTimes/*
+// @run-at        document-idle
 // ==/UserScript==
 
 (function() {
