@@ -20,9 +20,7 @@
    function doOnLoad() {
      addGlobalStyle('div#toolbar { top: 0; }');
      addGlobalStyle('div#restHeightContainer { top: 4em; z-index: 1;}');
-      alert("poop");
    }
 
    doOnLoad();
-
 })();
