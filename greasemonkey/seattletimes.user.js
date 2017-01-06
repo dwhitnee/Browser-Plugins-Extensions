@@ -21,7 +21,7 @@
    function doOnLoad() {
      addGlobalStyle('div#toolbar { top: 0; }');
      addGlobalStyle('div#restHeightContainer { top: 4em; z-index: 1;}');
-     addGlobalStyle('div#google_image_div { display: none;}');
+     addGlobalStyle('div.banner_popup { display: none;}');
    }
 
    doOnLoad();
