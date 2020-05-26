@@ -13,13 +13,13 @@
      if (cookieWrapper && cookieWrapper.children.length) {
        console.log("COOKIE!");
        cookieWrapper.style.height = "30em";
-       cookieWrapper.style.height = "30em";
+       cookieWrapper.style.width = "30em";
        cookieWrapper.style.backgroundColor = "yellow";
      } else {
        // restore?
        console.log("nope...");
        cookieWrapper.style.height = "";
-       cookieWrapper.style.height = "";
+       cookieWrapper.style.width = "";
        cookieWrapper.style.backgroundColor = "";
      }
    }
