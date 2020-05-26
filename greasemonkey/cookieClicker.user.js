@@ -2,7 +2,7 @@
 // @name          Find cookies
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
 // @description   Find cookies
-// @include       https://orteil.dashnet.org/cookieclicker/
+// @include       https://orteil.dashnet.org/*
 // ==/UserScript==
 
 (function() {
