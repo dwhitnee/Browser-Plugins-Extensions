@@ -20,12 +20,27 @@
        // cookieWrapper.style.width = "30em";
        // cookieWrapper.style.backgroundColor = "yellow";
        cookieWrapper.children[0].click();   // super cheating
+       spamCookie( 100 );
      } else {
        // restore?
        // cookieWrapper.style.height = "";
        // cookieWrapper.style.width = "";
        // cookieWrapper.style.backgroundColor = "";
      }
+   }
+
+   //----------------------------------------
+   // auto click N times
+   //----------------------------------------
+   function spamCookie( times ) {
+     let bigCookie = document.getElementById("bigCookie");
+     let spammer = setInterval( 
+       function() { 
+         bigCookie.click(); 
+         if (--times == 0) {
+           clearInterval( spammer );
+         }
+       }, 10);
    }
 
    //------------------------------
