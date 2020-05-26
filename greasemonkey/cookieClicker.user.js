@@ -8,7 +8,7 @@
 (function() {
 
    function checkForCookies() {
-     let cookieWrapper = document.body.getElementById("shimmers");
+     let cookieWrapper = document.getElementById("shimmers");
      let cookie = document.getElementById("shimmer");
 
      if (cookie) {
