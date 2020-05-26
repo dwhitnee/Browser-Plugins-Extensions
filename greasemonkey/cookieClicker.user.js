@@ -18,7 +18,7 @@
        castConjureBakedGoods();
      }
      spellWasCast = false;
-     setTimer( inactivityCheck, 30 * 60 * 1000 );
+     setTimeout( inactivityCheck, 30 * 60 * 1000 );
    }
 
    //------------------------------
@@ -104,7 +104,7 @@
    function doOnLoad() {
      setInterval( function() { checkForCookies(); }, 3 * 1000);  // 3 sec
      setInterval( function() { checkGrimoire(); }, 60 * 1000);  // 1 min  
-     setTimer( inactivityCheck, 30 * 60 * 1000 );   // 30 min
+     setTimeout( inactivityCheck, 30 * 60 * 1000 );   // 30 min
    };
 
    // start the process
