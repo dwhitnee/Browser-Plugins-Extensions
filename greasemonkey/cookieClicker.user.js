@@ -9,14 +9,15 @@
 
    function checkForCookies() {
      let cookieWrapper = document.getElementById("shimmers");
-     let cookie = document.getElementById("shimmer");
-
-     if (cookie) {
+     
+     if (cookieWrapper.children) {
+       console.log("COOKIE!");
        cookieWrapper.style.height = "30em";
        cookieWrapper.style.height = "30em";
        cookieWrapper.style.backgroundColor = "yellow";
      } else {
        // restore?
+       console.log("nope...");
        cookieWrapper.style.height = "";
        cookieWrapper.style.height = "";
        cookieWrapper.style.backgroundColor = "";
