@@ -24,20 +24,21 @@
      }
    }
 
+   // cast conjure baked goods when magic is at max
    function checkGrimoire() {
      let t = document.getElementById("grimoireBarText");
      let state = t.innerText.split("/");
-     if (state[0] == state[1]) {
-       // max charge, lets cast a spell!
-       console.log("CASTING SPELL!" + state[0] + " magic available");
+     console.log( state[0] + " magic available");
+     if (state[0] == state[1]) {       // max charge, lets cast a spell!
+       console.log("CASTING SPELL!");
        let conjureBakedGoods = document.getElementById("grimoireSpell0");
-       // conjureBakedGoods.click();
+       conjureBakedGoods.click();
     }
    }
 
    function doOnLoad() {
      setInterval( function() { checkForCookies(); }, 3 * 1000);
-     setInterval( function() { checkGrimoire(); }, 3 * 60 * 1000);
+     setInterval( function() { checkGrimoire(); }, 1 * 60 * 1000);
    };
 
    doOnLoad();
