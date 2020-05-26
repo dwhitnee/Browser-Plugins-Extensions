@@ -1,0 +1,16 @@
+{
+  "title": "Annoyance Hider",
+  "name": "annoyancehider",
+  "version": "0.4.0",
+  "description": "Hides the selected HTML element with a right click.",
+  "main": "index.js",
+  "author": "David Whitney",
+  "engines": {
+    "firefox": ">=38.0"
+  },
+  "updateURL": "https://github.com/dwhitnee/Browser-Plugins-Extensions/blob/master/Firefox/annoyance2",
+  "license": "MIT",
+  "keywords": [
+    "annoyance hider"
+  ]
+}
