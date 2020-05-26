@@ -10,7 +10,7 @@
    function checkForCookies() {
      let cookieWrapper = document.getElementById("shimmers");
      
-     if (cookieWrapper.children) {
+     if (cookieWrapper && cookieWrapper.children.length) {
        console.log("COOKIE!");
        cookieWrapper.style.height = "30em";
        cookieWrapper.style.height = "30em";
