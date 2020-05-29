@@ -2,10 +2,12 @@
 // @name          Find cookies
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
 // @description   So much cheating
+// @version      0.1
 // @include       https://orteil.dashnet.org/*
 // ==/UserScript==
 
 (function() {
+    'use strict';
 
    // Two strategies
    // 1) ConjureBakedGoods as often as possible (+30min of cookies)
@@ -31,9 +33,11 @@
    function inactivityCheck() {
      if (!spellWasCast) {
        console.log("No spells in 30 minutes");
-       itsAGoodTimeToCastASpell = true;
+       itsAGoodTimeToCastASpell = true;   // cast one at next opportunity
+     } else {
+       spellWasCast = false;  // reset activity flag
      }
-     setTimeout( inactivityCheck, 30 * 60 * 1000 );
+     setTimeout( inactivityCheck, 30 * 60 * 1000 ); // check back in 30 min
    }
 
    //------------------------------
@@ -54,13 +58,14 @@
        // worth a try to double up cookie effects
        // Holy Grail here is a Frenzy plus a click Frenzy plus 1000 clicks
        if (isFrenzy()) {
+         console.log("Frenzy!");
          if (fullManna()) {
            console.log("DOUBLE UP!");
            castSpell( ConjureBakedGoods );
            // castSpell( DiminishIneptitude );  // too expensive? worthless
            // castSpell( ForceHandOfFate );  // this is better but $$$
          }
-         spamCookie( 2000 );  // click frenzy is 13-26 seconds
+         spamCookie( 26 );  // click frenzy is 13-26 seconds
        }
      }
    }
@@ -68,22 +73,26 @@
 
    //----------------------------------------
    // Did the current Golden cookie trigger a multiplier - these stack so
-   // it's a good time to force a second cookie.
-   // x20: "Frenzy Cookie production x7 for 2 minutes, 34 seconds"
+   // it's a good time to force a second cookie or Conjure Baked Goods.
+   // 
+   // x20: "Frenzy. Cookie production x7 for 2 minutes, 34 seconds"
+   // x777: "Click frenzy Clicking power x777 for 26 seconds!" (a full day of cookies)
    // x16: "Luxuriant harvest [farms/10] Cookie production +1600% for 1 minute!"
    // x20: "High-five [cursors/10] Cookie production +2000% for 1 minute!"
    // x13: "Oiled-up Your 130 factories are boosting your CpS!Cookie production +1300% for 1 minute!"
-   // x1:  "Lucky! +96.171 trillion cookies!": One time cookies
+   // x1:  "Lucky! +96.171 trillion cookies!": One time cookies (no frenzy)
    // x30: Conjure baked goods equivalent
-   // x777: "Click frenzy Clicking power x777 for 26 seconds!"
-
+   // 1/20x: Recession Your 180 banks are rusting your CpS! Cookie production 1800% slower for 1 minute!
    //----------------------------------------
    function isFrenzy() {
      // particle0 contains the description of the last golden cookie effect
      let bonus = document.getElementById("particle0").innerText;
      console.log( bonus );
 
-     return bonus.includes("Cookie production") || bonus.includes("frenzy");
+     return bonus.includes("frenzy") || 
+       bonus.match("Cookie production [+x]");
+
+     // (bonus.includes("Cookie production") && !bonus.includes("slower"));
    }
 
    //-----------------------------------------
@@ -95,6 +104,7 @@
      let spell = document.getElementById("grimoireSpell"+spellId);
      spell.click();
      spellWasCast = true;
+     itsAGoodTimeToCastASpell = false;
      let notes = document.getElementById("notes");
      console.log( notes.innerText );  // log what spell did
    }
@@ -124,19 +134,20 @@
    }
 
    //----------------------------------------
-   // auto click N times
+   // auto click for N seconds
    //----------------------------------------
    function spamCookie( times ) {
      let bigCookie = document.getElementById("bigCookie");
 
-     // click every 10ms
+     times = 100*times;     // 100 click/sec
+
      let spammer = setInterval( 
        function() { 
          bigCookie.click(); 
          if (--times == 0) {
            clearInterval( spammer );
          }
-       }, 10);
+       }, 10);  // every 10ms
    }
 
    //----------------------------------------
