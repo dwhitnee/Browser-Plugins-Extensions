@@ -1,10 +1,37 @@
 // ==UserScript==
 // @name          Find cookies
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
-// @description   So much cheating
+// @description   So much cheating, but this is not an auto-clicker
 // @version      0.1
 // @include       https://orteil.dashnet.org/*
 // ==/UserScript==
+
+//----------------------------------------------------------------------
+// Cookie Clicker is the ultimate example of digital manual labor,
+// so after playing for a while I could not help but to automate the
+// things I was doing manually over and over.
+// 
+// The goal here is not to outright cheat, but to take the ethos of the
+// game even farther.  You click until you can hire grandmas, you hire
+// grandmas until you can get a farm, etc, etc, all the way up to
+// Javascript Consoles.  I figure a GreaseMonkey script is just the
+// next logical step in upgrades.
+// 
+// This is not a blind autoclicker, it reacts in a scripted way to
+// expected events and automates the clicks I would have done
+// (and have done) in each situation.  For example, this does not
+// blindly click the big cookie, but it does auto-click Golden Cookies
+// when they appear. And when that cookie triggers a frenzy it *does*
+// auto clikck the big cookie for 20 seconds because that's what I
+// would have done in that situation (but it can click much faster, I
+// feel a small amount of guilt over that, but not much). Also, if
+// there is a multiplier it will cast a spell in hopes of stacking
+// effects (but only if we are at max mana because that's how I would play.)
+// 
+// I don't advise blindly using this because where is the fun in that?
+// If you learn something from this, great. I did.
+//----------------------------------------------------------------------
+
 
 (function() {
     'use strict';
@@ -16,7 +43,7 @@
    //    potentially multiplying their effects.  
 
    let spellWasCast = false;
-   let itsAGoodTimeToCastASpell = false;
+   let itsAboutTimeToCastASpell = false;
    let spells = { 
      0: "Conjure Baked Goods", 
      1: "Force Hand of Fate",
@@ -25,20 +52,6 @@
    let ConjureBakedGoods = 0;   
    let ForceHandOfFate = 1;
    let DiminishIneptitude = 8;
-
-   //----------------------------------------
-   // if nothing happens for 30 minutes set a flag to say 
-   // cast a spell anyway
-   //----------------------------------------
-   function inactivityCheck() {
-     if (!spellWasCast) {
-       console.log("No spells in 30 minutes");
-       itsAGoodTimeToCastASpell = true;   // cast one at next opportunity
-     } else {
-       spellWasCast = false;  // reset activity flag
-     }
-     setTimeout( inactivityCheck, 30 * 60 * 1000 ); // check back in 30 min
-   }
 
    //------------------------------
    // click magic cookies when they appear. If they lead to a frenzy then 
@@ -59,7 +72,7 @@
        // Holy Grail here is a Frenzy plus a click Frenzy plus 1000 clicks
        if (isFrenzy()) {
          console.log("Frenzy!");
-         if (fullManna()) {
+         if (fullMana()) {
            console.log("DOUBLE UP!");
            castSpell( ConjureBakedGoods );
            // castSpell( DiminishIneptitude );  // too expensive? worthless
@@ -105,31 +118,31 @@
      let spell = document.getElementById("grimoireSpell"+spellId);
      spell.click();
      spellWasCast = true;
-     itsAGoodTimeToCastASpell = false;
+     itsAboutTimeToCastASpell = false;
      let notes = document.getElementById("notes");
      console.log( notes.innerText );  // log what spell did
    }
 
    //----------------------------------------
-   // Check our manna. We can't if the grimoire is closed or browser window 
+   // Check our mana. We can't if the grimoire is closed or browser window 
    // sleeps so the element is no longer updated.
    // @return true if magic meter is at maximum, or 30 min elapsed
    //----------------------------------------
-   function fullManna() {
+   function fullMana() {
      let t = document.getElementById("grimoireBarText");
 
      // Format of magic: "33/36 (+0.03/s)"
-     let manna = t.innerText.split(" ")[0].split("/");
+     let mana = t.innerText.split(" ")[0].split("/");
 
      // we're either at max magic or it's been 30 minutes
-     return (manna[0] == manna[1]) || itsAGoodTimeToCastASpell;
+     return (mana[0] == mana[1]) || itsAboutTimeToCastASpell;
    }   
 
    //------------------------------
    // cast Conjure Baked Goods when magic is at max
    //------------------------------
    function checkGrimoire() {
-     if (fullManna()) {
+     if (fullMana()) {
        castSpell( ConjureBakedGoods );
      }
    }
@@ -158,7 +171,21 @@
    }
 
    //----------------------------------------
-   // set up auto checks (cookies, esp in cookie chains only last a second)
+   // if nothing happens for 30 minutes set a flag to say 
+   // cast a spell anyway
+   //----------------------------------------
+   function inactivityCheck() {
+     if (!spellWasCast) {
+       console.log("No spells in 30 minutes");
+       itsAboutTimeToCastASpell = true;   // cast one at next opportunity
+     } else {
+       spellWasCast = false;  // reset activity flag
+     }
+     setTimeout( inactivityCheck, 30 * 60 * 1000 ); // check back in 30 min
+   }
+
+   //----------------------------------------
+   // set up auto checks (cookies, esp in cookie chain,s only last a second)
    //----------------------------------------
    function doOnLoad() {
      setInterval( function() { checkForCookies(); }, 1 * 1000);  // 1 sec
