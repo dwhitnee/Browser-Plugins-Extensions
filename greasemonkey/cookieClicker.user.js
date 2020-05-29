@@ -83,13 +83,14 @@
    // x1:  "Lucky! +96.171 trillion cookies!": One time cookies (no frenzy)
    // x30: Conjure baked goods equivalent
    // 1/20x: Recession Your 180 banks are rusting your CpS! Cookie production 1800% slower for 1 minute!
+   // Cursed finger Cookie production halted for 22 seconds, but each click is worth 22 seconds of CpS.
    //----------------------------------------
    function isFrenzy() {
      // particle0 contains the description of the last golden cookie effect
      let bonus = document.getElementById("particle0").innerText;
      console.log( bonus );
 
-     return bonus.includes("frenzy") || 
+     return bonus.includes("frenzy") || bonus.includes("halted") || 
        bonus.match("Cookie production [+x]");
 
      // (bonus.includes("Cookie production") && !bonus.includes("slower"));
