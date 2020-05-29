@@ -12,14 +12,14 @@
 // things I was doing manually over and over.
 // 
 // The goal here is not to outright cheat, but to take the ethos of the
-// game even farther.  You click until you can hire grandmas, you hire
+// game even farther. You click until you can hire grandmas, you hire
 // grandmas until you can get a farm, etc, etc, all the way up to
-// Javascript Consoles.  I figure a GreaseMonkey script is just the
+// Javascript Consoles. I figure a GreaseMonkey script is just the
 // next logical step in upgrades.
-// 
+//
 // This is not a blind autoclicker, it reacts in a scripted way to
 // expected events and automates the clicks I would have done
-// (and have done) in each situation.  For example, this does not
+// (and have done) in each situation. For example, this does not
 // blindly click the big cookie, but it does auto-click Golden Cookies
 // when they appear. And when that cookie triggers a frenzy it *does*
 // auto clikck the big cookie for 20 seconds because that's what I
@@ -34,11 +34,10 @@
 
 
 (function() {
-    'use strict';
+   'use strict';
 
    // Two strategies
-   // 1) ConjureBakedGoods as often as possible (+30min of cookies)
-   // 1a) ConjureBakedGoods during a frenzy to increase chance of multiplier
+   // 1) ConjureBakedGoods during a frenzy to increase chance of multiplier
    // 2) ForceHandOfFate (extra magic cookie) when any magic cookie frenzy
    //    potentially multiplying their effects.  
 
@@ -97,13 +96,16 @@
    // x30: Conjure baked goods equivalent
    // 1/20x: Recession Your 180 banks are rusting your CpS! Cookie production 1800% slower for 1 minute!
    // Cursed finger Cookie production halted for 22 seconds, but each click is worth 22 seconds of CpS.
+   // Dragonflight Clicking power x1111 for 22 seconds!
    //----------------------------------------
    function isFrenzy() {
      // particle0 contains the description of the last golden cookie effect
      let bonus = document.getElementById("particle0").innerText;
      console.log( bonus );
 
-     return bonus.includes("frenzy") || bonus.includes("halted") || 
+     return bonus.includes("frenzy") || 
+       bonus.includes("halted") || 
+       bonus.includes("Dragonflight") || 
        bonus.match("Cookie production [+x]");
 
      // (bonus.includes("Cookie production") && !bonus.includes("slower"));
