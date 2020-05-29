@@ -70,13 +70,13 @@
        // If magic to spare it's worth a try to double up cookie effects
        // Holy Grail here is a multiplied click Frenzy (plus 1000 clicks)
        if (isFrenzy()) {              // our CpS has increased temporarily
-         if (fullMana()) {
-           if (isClickingFrenzy()) {
-             console.log("Clicking Frenzy!");
-             castSpell( ForceHandOfFate );   // hoping to multiply each click
-           } else {
-             console.log("Production Frenzy!");
-             castSpell( ConjureBakedGoods ); // maximize spell
+         if (isClickingFrenzy()) {
+           console.log("Clicking Frenzy!");
+           castSpell( ForceHandOfFate );   // hoping to multiply each click
+         } else {
+           console.log("Production Frenzy!");
+           if (fullMana()) {           // maximize spell if we can afford it
+             castSpell( ConjureBakedGoods );
            }
            // castSpell( DiminishIneptitude );  // too expensive? worthless
          }
