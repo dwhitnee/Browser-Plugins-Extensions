@@ -37,8 +37,8 @@
    'use strict';
 
    // Two strategies
-   // 1) ConjureBakedGoods during a frenzy to increase chance of multiplier
-   // 2) ForceHandOfFate (extra magic cookie) when any magic cookie frenzy
+   // 1) ConjureBakedGoods during a CpS frenzy to maximize Baked Goods effect
+   // 2) ForceHandOfFate (extra magic cookie) when clicking frenzy (x777) occurs
    //    potentially multiplying their effects.  
 
    let spellWasCast = false;
@@ -67,15 +67,18 @@
          cookieWrapper.children[i].click();   // super cheating
        }
 
-       // worth a try to double up cookie effects
-       // Holy Grail here is a Frenzy plus a click Frenzy plus 1000 clicks
-       if (isFrenzy()) {
-         console.log("Frenzy!");
+       // If magic to spare it's worth a try to double up cookie effects
+       // Holy Grail here is a multiplied click Frenzy (plus 1000 clicks)
+       if (isFrenzy()) {              // our CpS has increased temporarily
          if (fullMana()) {
-           console.log("DOUBLE UP!");
-           castSpell( ConjureBakedGoods );
+           if (isClickingFrenzy()) {
+             console.log("Clicking Frenzy!");
+             castSpell( ForceHandOfFate );   // hoping to multiply each click
+           } else {
+             console.log("Production Frenzy!");
+             castSpell( ConjureBakedGoods ); // maximize spell
+           }
            // castSpell( DiminishIneptitude );  // too expensive? worthless
-           // castSpell( ForceHandOfFate );  // this is better but $$$
          }
          spamCookie( 26 );  // click frenzy is 13-26 seconds
        }
@@ -84,32 +87,41 @@
      
 
    //----------------------------------------
-   // Did the current Golden cookie trigger a multiplier - these stack so
-   // it's a good time to force a second cookie or Conjure Baked Goods.
+   // @return true if the current Golden Cookie triggered a +CpS multiplier 
+   // it's a good time to Conjure Baked Goods (30 min of CpS)
    // 
    // x20: "Frenzy. Cookie production x7 for 2 minutes, 34 seconds"
-   // x777: "Click frenzy Clicking power x777 for 26 seconds!" (a full day of cookies)
+   // x666:"Elder frenzy Cookie production x666 for 14 seconds!"
    // x16: "Luxuriant harvest [farms/10] Cookie production +1600% for 1 minute!"
    // x20: "High-five [cursors/10] Cookie production +2000% for 1 minute!"
    // x13: "Oiled-up Your 130 factories are boosting your CpS!Cookie production +1300% for 1 minute!"
+   // x30: [Conjure baked goods equivalent]
+   //
+   // Not a frenzy:
    // x1:  "Lucky! +96.171 trillion cookies!": One time cookies (no frenzy)
-   // x30: Conjure baked goods equivalent
    // 1/20x: Recession Your 180 banks are rusting your CpS! Cookie production 1800% slower for 1 minute!
-   // Cursed finger Cookie production halted for 22 seconds, but each click is worth 22 seconds of CpS.
-   // Dragonflight Clicking power x1111 for 22 seconds!
    //----------------------------------------
    function isFrenzy() {
      // particle0 contains the description of the last golden cookie effect
      let bonus = document.getElementById("particle0").innerText;
      console.log( bonus );
 
-     return bonus.includes("frenzy") || 
-       bonus.includes("halted") || 
-       bonus.includes("Dragonflight") || 
-       bonus.match("Cookie production [+x]");
-
-     // (bonus.includes("Cookie production") && !bonus.includes("slower"));
+     // catch "x7" or "+700%"
+     return bonus.match("Cookie production [+x]") || isClickingFrenzy();
    }
+
+   //----------------------------------------
+   // @return true if each click has been massively increased
+   //
+   // "Click frenzy Clicking power x777 for 26 seconds!"
+   // "Cursed finger Cookie production halted for 22 seconds, but each click is worth 22 seconds of CpS."
+   // "Dragonflight Clicking power x1111 for 22 seconds!"
+   //----------------------------------------
+   function isClickingFrenzy() {
+     let bonus = document.getElementById("particle0").innerText;
+     return bonus.includes("Clicking power") || bonus.includes("halted"); 
+   }
+
 
    //-----------------------------------------
    // 0: Conjure Baked Goods
