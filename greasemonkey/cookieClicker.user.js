@@ -91,10 +91,10 @@
    // it's a good time to Conjure Baked Goods (30 min of CpS)
    // 
    // x20: "Frenzy. Cookie production x7 for 2 minutes, 34 seconds"
-   // x666:"Elder frenzy Cookie production x666 for 14 seconds!"
    // x16: "Luxuriant harvest [farms/10] Cookie production +1600% for 1 minute!"
    // x20: "High-five [cursors/10] Cookie production +2000% for 1 minute!"
    // x13: "Oiled-up Your 130 factories are boosting your CpS!Cookie production +1300% for 1 minute!"
+   // x666: "Elder frenzy Cookie production x666 for 14 seconds!"
    // x30: [Conjure baked goods equivalent]
    //
    // Not a frenzy:
@@ -116,10 +116,12 @@
    // "Click frenzy Clicking power x777 for 26 seconds!"
    // "Cursed finger Cookie production halted for 22 seconds, but each click is worth 22 seconds of CpS."
    // "Dragonflight Clicking power x1111 for 22 seconds!"
+   // "Elder frenzy Cookie production x666 for 14 seconds!" (not a clicking frenzy, but worth a boost if possible)
    //----------------------------------------
    function isClickingFrenzy() {
      let bonus = document.getElementById("particle0").innerText;
-     return bonus.includes("Clicking power") || bonus.includes("halted"); 
+     return bonus.includes("Clicking power") || bonus.includes("halted") ||
+       bonus.includes(""); 
    }
 
 
