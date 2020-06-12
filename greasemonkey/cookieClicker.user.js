@@ -136,8 +136,8 @@
      spell.click();
      spellWasCast = true;
      itsAboutTimeToCastASpell = false;
-     let notes = document.getElementById("notes");
-     console.log( notes.innerText );  // log what spell did
+
+     logEffect();
    }
 
    //----------------------------------------
@@ -163,19 +163,27 @@
        castSpell( ConjureBakedGoods );
      }
    }
+   
+   function logEffect() {
+     let notes = document.getElementById("notes");
+     console.log( notes.innerText );  // log what happened
+   }
 
    //----------------------------------------
    // Check to see if there's a fortune in the news (ie, green clickable text)
+   // Clickable span in green text is child of news
    //----------------------------------------
    function checkNewsFeedForFortune() {
      let newsFeed = document.getElementById("commentsText");
 
-     if (newsFeed.className != "commentsText risingUp") {
-       console.log("FORTUNE! " + newsFeed.className);
+     if (newsFeed.children.length > 0) {
+       let fortune = newsFeed.children[0];
+       if (fortune.className == "fortune") {
+         console.log("FORTUNE! " + fortune.innerText);
+         fortune.click();
+         logEffect();
+       }
      }
-     // if (newsFeed is green) {
-     //   newsFeed.click();
-     // }
    }
 
    //----------------------------------------
