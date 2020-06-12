@@ -164,6 +164,19 @@
    }
 
    //----------------------------------------
+   // Check to see if there's a fortune in the news (ie, green clickable text)
+   //----------------------------------------
+   function checkNewsFeedForFortune() {
+     let newsfeed = document.getElementById("commentsText");
+     if (newsFeed.className != "commentsText risingUp") {
+       console.log("FORTUNE! " + newsFeed.className);
+     }
+     // if (newsFeed is green) {
+     //   newsFeed.click();
+     // }
+   }
+
+   //----------------------------------------
    // auto click for N seconds
    //----------------------------------------
    function spamCookie( times ) {
@@ -206,6 +219,7 @@
    function doOnLoad() {
      setInterval( function() { checkForCookies(); }, 1 * 1000);  // 1 sec
      setTimeout( inactivityCheck, 30 * 60 * 1000 );   // 30 min
+     setInterval( function() { checkNewsFeedForFortune(); }, 1 * 10000); // 10s
    };
 
    // start the timers
