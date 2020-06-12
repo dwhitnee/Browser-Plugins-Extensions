@@ -100,6 +100,7 @@
    // Not a frenzy:
    // x1:  "Lucky! +96.171 trillion cookies!": One time cookies (no frenzy)
    // 1/20x: Recession Your 180 banks are rusting your CpS! Cookie production 1800% slower for 1 minute!
+   // Clot Cookie production halved for 2 minutes, 26 seconds!
    //----------------------------------------
    function isFrenzy() {
      // particle0 contains the description of the last golden cookie effect
@@ -121,7 +122,7 @@
    function isClickingFrenzy() {
      let bonus = document.getElementById("particle0").innerText;
      return bonus.includes("Clicking power") || bonus.includes("halted") ||
-       bonus.includes(""); 
+       bonus.includes("Elder frenzy"); 
    }
 
 
