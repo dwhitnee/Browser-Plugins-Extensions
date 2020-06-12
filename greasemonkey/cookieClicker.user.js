@@ -167,7 +167,8 @@
    // Check to see if there's a fortune in the news (ie, green clickable text)
    //----------------------------------------
    function checkNewsFeedForFortune() {
-     let newsfeed = document.getElementById("commentsText");
+     let newsFeed = document.getElementById("commentsText");
+
      if (newsFeed.className != "commentsText risingUp") {
        console.log("FORTUNE! " + newsFeed.className);
      }
