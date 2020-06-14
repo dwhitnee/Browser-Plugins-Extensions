@@ -18,6 +18,8 @@
      for (i=0; i < allSlots.length; i++) {
        if (allSlots[i].innerText.includes("1/1")) {
          slots.push( allSlots[i] );
+       } else {
+         allSlots[i].parentElement.parentElement.parentElement.parentElement.style.display="none";
        }
      }
      display("Found " + slots.length + " free lanes today");
