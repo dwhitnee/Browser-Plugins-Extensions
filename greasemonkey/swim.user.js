@@ -17,6 +17,11 @@
 // This script filters out all the "0/1" lanes (ie, the unavailable lanes).
 // NOTE: It runs only on page load so if you click to a day day you'll have
 // to reload the page.
+// 
+// TO INSTALL: first you need the Chrome TamperMonkey or 
+// Firefox GreaseMonkey extension installed on your browser.
+// Then just click the "RAW" button on this page and the browser
+// should interpret that file as a script to install. 
 //----------------------------------------------------------------------
 
 (function() {
