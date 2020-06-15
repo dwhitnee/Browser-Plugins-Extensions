@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Swim Lanes
 // @namespace    http://davidwhitney.net/
-// @version      0.1
+// @version      0.5
 // @description  Display actual available lanes
 // @author       David Whitney
 // @match        https://sandpointcountryclub.getomnify.com/
