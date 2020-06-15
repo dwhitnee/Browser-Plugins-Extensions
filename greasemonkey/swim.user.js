@@ -19,7 +19,6 @@
 // to reload the page.
 //----------------------------------------------------------------------
 
-
 (function() {
    'use strict';
 
@@ -28,6 +27,7 @@
    //----------------------------------------
    let container = createContainer();
    let lastDate = "";
+   let numDates = 0;
    setInterval( checkForNewData, 1000 );
 
 
@@ -63,6 +63,7 @@
    //----------------------------------------
    function display( text ) {
      container.appendChild( createTextDiv( text )); 
+     container.style.display="block";
    }
 
    //----------------------------------------
@@ -83,11 +84,25 @@
      div.style.border = "green 5px solid";
      div.style.padding = "0.5em";
      div.style.fontWeight = "bold";
+     div.style.position = "fixed";
+     div.style.zIndex = "1000";
+     div.style.background = "white";
+     div.style.opacity = "80%";
+     div.setAttribute("draggable", "true");
+
+     div.setAttribute("onclick", "event.currentTarget.style.display='none'");
+
+     div.setAttribute("ondragstart", "event.dataTransfer.setData(\"text\", event.target.id)'");
 
      let pageLocation = 
        document.getElementsByClassName("client-website-header")[0];
      let body = document.getElementsByClassName("client-schedule-body")[0];
      body.insertBefore( div, pageLocation ); 
+
+     // alas can't add a functio to global scope from greasemonkey,
+     // too weird to do inline
+     document.body.setAttribute("ondrop", "SPCC_Drop(event)"); 
+     document.body.setAttribute("ondragover", "event.preventDefault()");
 
      return div;
    }
@@ -95,28 +110,37 @@
    //----------------------------------------
    // Guess what date is displayed based on current display
    //----------------------------------------
-   function checkDate() {
+   function pageHasChanged() {
+     let date = "";
      let elems = document.getElementsByClassName("date");
+
      if (elems.length) {
-       return elems[0].innerText;  // "Wed, 17 Jun 2020"
-     } else {
-       return "";
+       date = elems[0].innerText;  // "Wed, 17 Jun 2020"
      }
+     
+     console.log("Date is " + date );
+
+     // if the date has changed or more lanes added to the page
+     let hasChanged = (date != lastDate) || (numDates != elems.length);
+
+     // update state
+     lastDate = date;
+     numDates = elems.length;
+
+     return hasChanged;
    }
 
    //----------------------------------------
    // see what the date is, if it's new, go get lane times
    //----------------------------------------
    function checkForNewData() {
-     let date = checkDate();
-     console.log("Date is " + date );
+     if (pageHasChanged()) {
 
-     if (date != lastDate) {
        // wipe slate
-       while (container.childNodes.length) {
+       while (container.childNodes.length) {          
          container.removeChild( container.childNodes[0]);
        }
-       lastDate = date;
+
        findTimes();
      }
    }
