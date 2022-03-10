@@ -15,7 +15,7 @@ function init( bucket ) {
 AWS.config.region = 'us-east-1';
 AWS.config.credentials = {
   aws_access_key_id: "AKIAZSEWPPAKIT6CZTOI",
-  aws_secret_access_key: "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"
+//  aws_secret_access_key: ""
 };
 
 
@@ -31,7 +31,7 @@ function getHtml(template) {
 //----------------------------------------------------------------------
 function listAlbums() {
   s3.listObjects(
-    { Delimiter: '/' }, 
+    { Delimiter: '/' },
     function(err, data) {
       if (err) {
         return alert('There was an error listing your albums: ' + err.message);
