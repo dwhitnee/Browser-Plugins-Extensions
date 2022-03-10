@@ -1,9 +1,15 @@
 /* global AWS */
 
-// TODO: Create a whole tree structure on one page
+//----------------------------------------------------------------------
+// Browse hierarchical photo albums in an S3 bucket
+// 2022 David Whitney
+//
+// Usage:
+//    init( s3Bucket, identityPool );
+//    displayPage();
+//----------------------------------------------------------------------
 
 var s3;
-var identityPool = 'us-east-1:9b3a1bf8-38e5-4cd1-9f66-7d9025af8e5f';
 var albumBucketName;  // passed into init()
 var root = "";   // directory we are in
 
@@ -11,14 +17,15 @@ var root = "";   // directory we are in
 // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-browser-credentials-cognito.html
 
 // Initialize the Amazon Cognito credentials provider (IdentityPool created elsewhere)
-AWS.config.region = 'us-east-1';
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: identityPool,
-});
-
 // AWS nuts and bolts
-function init( bucket ) {
+function init( bucket, identityPool ) {
   albumBucketName = bucket;
+
+  AWS.config.region = 'us-east-1';
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: identityPool,
+  });
+
   s3 = new AWS.S3( {
       apiVersion: '2006-03-01',
       params: { Bucket: bucket }
@@ -57,15 +64,6 @@ function displayPage() {
   if (!root) {
     document.getElementById("backButton").style.display = "none";
   }
-  displayDirectory( root );
-}
-
-
-//----------------------------------------------------------------------
-// Build HTML to show only the Albums, not photos themselves
-//----------------------------------------------------------------------
-function displayDirectory( root ) {
-  root = root || '';
 
   s3.listObjects(
     { Prefix: root, Delimiter: '/' },
@@ -174,67 +172,4 @@ function displayPhotos( files, bucketUrl, elementId ) {
   document.getElementById( elementId ).innerHTML = getHtml( htmlTemplate );
 
   return true;
-}
-
-
-//----------------------------------------------------------------------
-// display only the files in this directory (not other albums or nested files)
-//----------------------------------------------------------------------
-function displayPhotos2( dir ) {
-  var albumPhotosKey = dir;
-  console.log("Viewing " + albumPhotosKey );
-
-  // TODO: skip directories (collect directories in an array/hash
-
-  s3.listObjects({ Prefix: albumPhotosKey }, function(err, data) {
-    if (err) {
-      return alert('There was an error viewing your album: ' + err.message);
-    }
-    // 'this' references the AWS.Request instance that represents the response
-    var href = this.request.httpRequest.endpoint.href;
-    var bucketUrl = href + albumBucketName + '/';
-
-    var albums = [];
-
-    var photos = data.Contents.map( function( photo ) {
-      var photoKey = photo.Key;
-      // skip dot files
-      if (photoKey.match( /\/\./ )) {
-        return '';
-      }
-
-      var photoUrl = bucketUrl + encodeURIComponent(photoKey);
-      return getHtml([
-        '<div class="photo">',
-          '<a href="' + photoUrl + '" target="_blank">',
-           '<img class="thumbnail" src="' + photoUrl + '"/>',
-          '<div>',
-              photoKey.replace(albumPhotosKey, ''),
-          '</div>',
-          '</a>',
-          '</div>',
-      ]);
-
-    });
-
-    var message = photos.length ? 'Click on pictures for full resolution': '<p>There are no photos in this album.</p>';
-
-    var htmlTemplate = [
-      message,
-      '<div class="photoAlbum">',
-        getHtml(photos),
-      '</div>',
-      '<h2>',
-        'End of Album',
-      '</h2>',
-      '<div>',
-        '<button onclick="history.back()">Back</button>',
-      '</div>',
-    ];
-
-    document.getElementById('photos').innerHTML = getHtml( htmlTemplate );
-
-    return true;
-  });
-
 }

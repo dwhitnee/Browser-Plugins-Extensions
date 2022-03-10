@@ -2,7 +2,8 @@
 <html>
   <head>
     <title>Photo Album Viewer</title>
-    <link rel="stylesheet" href="photos.css" />
+    <!-- <link rel="stylesheet" href="photos.css" /> -->
+    <link rel="stylesheet" href="//raw.githubusercontent.com/dwhitnee/Browser-Plugins-Extensions/master/s3PhotoBucket/photos.css" />
   </head>
 
   <body>
@@ -14,10 +15,18 @@
     <div id="albums"></div>
     <div id="photos"></div>
 
-
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1090.0.min.js"></script>
-    <script src="./photoViewer.js"></script>
-    <script>init("dwhitnee-pictures"); displayPage();</script>
+
+    <!-- <script src="./photoViewer.js"></script> -->
+    <script src="//raw.githubusercontent.com/dwhitnee/Browser-Plugins-Extensions/master/s3PhotoBucket/photoViewer.js"></script>
+
+    <script>
+        // s3 bucket owner must make Cognito IdentityPool for this to work
+        var identityPool ="us-east-1:9b3a1bf8-38e5-4cd1-9f66-7d9025af8e5f";
+        var s3Bucket = "dwhitnee-pictures";
+        init( s3Bucket, identityPool );
+        displayPage();
+    </script>
 
   </body>
 </html>
