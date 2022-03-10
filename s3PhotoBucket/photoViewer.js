@@ -1,22 +1,23 @@
+/* global AWS */
+
 var s3;
+var identityPool = 'us-east-1:9b3a1bf8-38e5-4cd1-9f66-7d9025af8e5f';
+var albumBucketName;  // passed into init()
+
+// Initialize the Amazon Cognito credentials provider
+AWS.config.region = 'us-east-1';
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: identityPool,
+});
+
 
 function init( bucket ) {
+  albumBucketName = bucket;
   s3 = new AWS.S3( {
       apiVersion: '2006-03-01',
       params: { Bucket: bucket }
     });
 }
-
-// Initialize the Amazon Cognito credentials provider
-// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-//     IdentityPoolId: 'IDENTITY_POOL_ID',
-// });
-
-AWS.config.region = 'us-east-1';
-AWS.config.credentials = {
-  aws_access_key_id: "AKIAZSEWPPAKIT6CZTOI",
-//  aws_secret_access_key: ""
-};
 
 
 //----------------------------------------------------------------------
