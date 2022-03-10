@@ -1,7 +1,17 @@
+* {
+  background: #ccc;
+  color: #333;
+}
+
 .photo {
   padding: 1em;
 }
 
 button {
   margin: .5em;
+}
+
+.photoAlbum {
+  display: grid;
+  grid-template-columns: auto auto auto;
 }

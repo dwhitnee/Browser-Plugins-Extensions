@@ -1,5 +1,7 @@
 /* global AWS */
 
+// TODO: Create a whole tree structure on one page
+
 var s3;
 var identityPool = 'us-east-1:9b3a1bf8-38e5-4cd1-9f66-7d9025af8e5f';
 var albumBucketName;  // passed into init()
@@ -32,6 +34,7 @@ function getHtml(template) {
 
 //----------------------------------------------------------------------
 // List the photo albums that exist in the bucket.
+// TODO: Find all subdirs and list those
 //----------------------------------------------------------------------
 function listAlbums( prefix ) {
 //  var prefix = "slides/Whitneys50s-70s/jpg large";
@@ -88,15 +91,17 @@ function viewAlbum( albumName ) {
   var albumPhotosKey = albumName + '/';
   console.log("Viewing " + albumPhotosKey );
 
-  // TODO: skip dotfiles and directories (collect directories in an array/hash
+  // TODO: skip directories (collect directories in an array/hash
 
-  s3.listObjects({Prefix: albumPhotosKey}, function(err, data) {
+  s3.listObjects({ Prefix: albumPhotosKey }, function(err, data) {
     if (err) {
       return alert('There was an error viewing your album: ' + err.message);
     }
     // 'this' references the AWS.Request instance that represents the response
     var href = this.request.httpRequest.endpoint.href;
     var bucketUrl = href + albumBucketName + '/';
+
+    var albums = [];
 
     var photos = data.Contents.map( function( photo ) {
       var photoKey = photo.Key;
@@ -105,10 +110,16 @@ function viewAlbum( albumName ) {
         return '';
       }
 
+      let album = photoKey.match( /(.*)\/.*/ );
+      if (album) {
+        albums[ album[1] ] = true;
+        // return '';
+      }
+
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
       return getHtml([
-        '<div>',
-          '<a class="photo" href="' + photoUrl + '">',
+        '<div class="photo">',
+          '<a href="' + photoUrl + '">',
 //           '<img style="width:128px;height:128px;" src="' + photoUrl + '"/>',
           '<div>',
               photoKey.replace(albumPhotosKey, ''),
@@ -116,7 +127,18 @@ function viewAlbum( albumName ) {
           '</a>',
           '</div>',
       ]);
+
     });
+
+    console.log( albums );
+    Object.keys(albums).map( function( album ) {
+      console.log( album );
+    });
+
+    // for (let i=0; i < albums.length; i++) {
+    //   listAlbums( albums[i] );
+    // }
+
 
     var message = photos.length ? '': '<p>There are no photos in this album.</p>';
 
@@ -130,7 +152,7 @@ function viewAlbum( albumName ) {
         'Album: ' + albumName,
       '</h2>',
       message,
-      '<div>',
+      '<div class="photoAlbum">',
         getHtml(photos),
       '</div>',
       '<h2>',
