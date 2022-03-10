@@ -1,5 +1,4 @@
 /* global AWS */
-
 //----------------------------------------------------------------------
 // Browse hierarchical photo albums in an S3 bucket
 // 2022 David Whitney
@@ -13,7 +12,6 @@ var s3;
 var albumBucketName;  // passed into init()
 var root = "";   // directory we are in
 
-// https://console.aws.amazon.com/cognito/code/
 // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-browser-credentials-cognito.html
 
 // Initialize the Amazon Cognito credentials provider (IdentityPool created elsewhere)
@@ -74,8 +72,8 @@ function displayPage() {
         var href = this.request.httpRequest.endpoint.href;
         var bucketUrl = href + albumBucketName + '/';
 
-        displayAlbums( data.CommonPrefixes, "albums");  // directory names
-        displayPhotos( data.Contents, bucketUrl, "photos");        // file contents of directory
+        displayAlbums( data.CommonPrefixes, "albums");      // directory names
+        displayPhotos( data.Contents, bucketUrl, "photos"); // file contents of directory
       }
       return true;
     });
@@ -93,17 +91,13 @@ function displayAlbums( albumData, elementId ) {
       let albumName = dirName.replace(/\/$/, '');  // remove trailing slash
       albumName = albumName.replace( /.*\//, '');  // remove leading path
 
-      // if (dirName == root) {
-      //   return "";
-      // } else {
-        return getHtml([
-          '<li>',
-          '<button onclick="changePage(\'' + fixedEncodeURIComponent( dirName ) + '\')">',
-          albumName,
-          '</button>',
-          '</li>'
-        ]);
-      // };
+      return getHtml([
+        '<li>',
+        '<button onclick="changePage(\'' + fixedEncodeURIComponent( dirName ) + '\')">',
+        albumName,
+        '</button>',
+        '</li>'
+      ]);
     });
 
   var htmlTemplate = [];
