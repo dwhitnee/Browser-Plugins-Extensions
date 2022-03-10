@@ -4,6 +4,9 @@ var s3;
 var identityPool = 'us-east-1:9b3a1bf8-38e5-4cd1-9f66-7d9025af8e5f';
 var albumBucketName;  // passed into init()
 
+// https://console.aws.amazon.com/cognito/code/
+// https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-browser-credentials-cognito.html
+
 // Initialize the Amazon Cognito credentials provider
 AWS.config.region = 'us-east-1';
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -30,9 +33,14 @@ function getHtml(template) {
 //----------------------------------------------------------------------
 // List the photo albums that exist in the bucket.
 //----------------------------------------------------------------------
-function listAlbums() {
+function listAlbums( prefix ) {
+//  var prefix = "slides/Whitneys50s-70s/jpg large";
+
+  prefix = prefix || '';
+
   s3.listObjects(
-    { Delimiter: '/' },
+    { Prefix: prefix,
+      Delimiter: '/' },
     function(err, data) {
       if (err) {
         return alert('There was an error listing your albums: ' + err.message);
@@ -40,7 +48,7 @@ function listAlbums() {
         var albums = data.CommonPrefixes.map(
           function( commonPrefix ) {
             var prefix = commonPrefix.Prefix;
-            var albumName = decodeURIComponent( prefix.replace('/', '') );
+            var albumName = decodeURIComponent( prefix.replace(/\/$/, '') );
             return getHtml([
                              '<li>',
                              '<button onclick="viewAlbum(\''+albumName+'\')\">',
@@ -63,6 +71,7 @@ function listAlbums() {
         ];
         document.getElementById('viewer').innerHTML = getHtml(htmlTemplate);
       }
+      return true;
     });
 }
 
@@ -89,8 +98,13 @@ function viewAlbum( albumName ) {
     var href = this.request.httpRequest.endpoint.href;
     var bucketUrl = href + albumBucketName + '/';
 
-    var photos = data.Contents.map(function(photo) {
+    var photos = data.Contents.map( function( photo ) {
       var photoKey = photo.Key;
+      // skip dot files
+      if (photoKey.match( /\/\./ )) {
+        return '';
+      }
+
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
       return getHtml([
         '<div>',
@@ -130,6 +144,7 @@ function viewAlbum( albumName ) {
     ];
 
     document.getElementById('viewer').innerHTML = getHtml( htmlTemplate );
-    document.getElementsByTagName('img')[0].setAttribute('style', 'display:none;');
+
+    return true;
   });
 }
