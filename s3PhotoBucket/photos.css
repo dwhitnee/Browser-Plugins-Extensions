@@ -1,14 +1,39 @@
-* {
+body {
   background: #ccc;
   color: #333;
+  font-family: sans-serif;
 }
 
-.photo {
-  padding: 1em;
+ul {
+  list-style-type: none;
+  padding-inline-start: 0;
 }
 
 button {
-  margin: .5em;
+  margin: .25em;
+}
+
+
+#breadcrumb {
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+#photos {
+  padding-top: .5em;
+  font-style: italic;
+}
+
+.photo {
+  max-width: 25vw;
+  padding: 1em;
+  height: auto;
+  width: auto;
+}
+
+.thumbnail {
+  max-width: 25vw;
+  height: auto;
 }
 
 .photoAlbum {

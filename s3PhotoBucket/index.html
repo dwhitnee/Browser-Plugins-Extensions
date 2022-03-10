@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Pretty Photos</title>
+    <title>Photo Album Viewer</title>
     <link rel="stylesheet" href="photos.css" />
   </head>
 
   <body>
-    <h1>Photo Album Viewer</h1>
-    <div id="viewer" />
+    <h2>Photo Album Explorer</h2>
+    <div>
+        <span id="breadcrumb"></span>
+        <button id="backButton" onclick="history.back()">Back &#x2B90;</button>
+    </div>
+    <div id="albums"></div>
+    <div id="photos"></div>
+
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1090.0.min.js"></script>
     <script src="./photoViewer.js"></script>
-    <script>init("dwhitnee-pictures"); listAlbums();</script>
+    <script>init("dwhitnee-pictures"); displayPage();</script>
 
   </body>
 </html>
