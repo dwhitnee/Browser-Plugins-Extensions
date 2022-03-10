@@ -38,12 +38,12 @@ function listAlbums() {
         return alert('There was an error listing your albums: ' + err.message);
       } else {
         var albums = data.CommonPrefixes.map(
-          function(commonPrefix) {
+          function( commonPrefix ) {
             var prefix = commonPrefix.Prefix;
-            var albumName = decodeURIComponent(prefix.replace('/', ''));
+            var albumName = decodeURIComponent( prefix.replace('/', '') );
             return getHtml([
                              '<li>',
-                             '<button style="margin:5px;" onclick="viewAlbum(\'' + albumName + '\')">',
+                             '<button onclick="viewAlbum(\''+albumName+'\')\">',
                              albumName,
                              '</button>',
                              '</li>'
@@ -66,12 +66,21 @@ function listAlbums() {
     });
 }
 
+// function showPicture( url ) {
+//  window.open( url, '_blank');
+// }
 
 //----------------------------------------------------------------------
 // Show the photos that exist in an album.
+// TODO: also show subdirs as another album
 //----------------------------------------------------------------------
-function viewAlbum(albumName) {
-  var albumPhotosKey = encodeURIComponent(albumName) + '/';
+function viewAlbum( albumName ) {
+//  var albumPhotosKey = encodeURIComponent(albumName) + '/';
+  var albumPhotosKey = albumName + '/';
+  console.log("Viewing " + albumPhotosKey );
+
+  // TODO: skip dotfiles and directories (collect directories in an array/hash
+
   s3.listObjects({Prefix: albumPhotosKey}, function(err, data) {
     if (err) {
       return alert('There was an error viewing your album: ' + err.message);
@@ -84,23 +93,18 @@ function viewAlbum(albumName) {
       var photoKey = photo.Key;
       var photoUrl = bucketUrl + encodeURIComponent(photoKey);
       return getHtml([
-        '<span>',
+        '<div>',
+          '<a class="photo" href="' + photoUrl + '">',
+//           '<img style="width:128px;height:128px;" src="' + photoUrl + '"/>',
           '<div>',
-            '<br/>',
-            '<img style="width:128px;height:128px;" src="' + photoUrl + '"/>',
-          '</div>',
-          '<div>',
-            '<span>',
               photoKey.replace(albumPhotosKey, ''),
-            '</span>',
           '</div>',
-        '</span>'
+          '</a>',
+          '</div>',
       ]);
     });
 
-    var message = photos.length ?
-      '<p>The following photos are present.</p>' :
-      '<p>There are no photos in this album.</p>';
+    var message = photos.length ? '': '<p>There are no photos in this album.</p>';
 
     var htmlTemplate = [
       '<div>',
