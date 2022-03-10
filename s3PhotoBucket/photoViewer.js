@@ -154,10 +154,6 @@ function displayPhotos( files, bucketUrl, elementId ) {
 
   });
 
-  // https://s3.amazonaws.com/dwhitnee-pictures/slides/Whitneys50s-70s/jpg%20large/Carousel%2001/slides%2FWhitneys50s-70s%2Fjpg%20large%2FCarousel%2001%2F1-001.jpg
-
-  // https://s3.amazonaws.com/dwhitnee-pictures/slides%2FWhitneys50s-70s%2Fjpg%20large%2FSlide%20Tray%2016_1981%20thru%201983%2F16-013.jpg
-
   var htmlTemplate = ["Select an album"];
 
   if (anyPhotos) {
