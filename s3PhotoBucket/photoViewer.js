@@ -53,6 +53,8 @@ function fixedEncodeURIComponent(str) {
 function displayPage() {
   // Probably first page load, check if this is a bookmark
   if (root == "") {
+    // FIXME: this breaks if ?root not present but ?somethingElse is
+
     let query = document.location.search;
     root = decodeURIComponent( query.replace(/\?root=/,''));
   }
