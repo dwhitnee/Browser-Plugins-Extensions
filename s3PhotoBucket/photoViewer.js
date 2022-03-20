@@ -30,6 +30,18 @@ function init( bucket, identityPool ) {
     });
 }
 
+// set up AWS config, auth handled elsewhere
+function initS3( s3BucketParams ) {
+  albumBucketName = s3BucketParams.Bucket;
+
+  console.log("viewing files in " + albumBucketName);
+  s3 = new AWS.S3( {
+    apiVersion: '2006-03-01',
+    params: s3BucketParams
+  });
+}
+
+
 // change URL so browser history works
 function changePage( root ) {
   document.location.search = "?root=" + root;
@@ -81,6 +93,20 @@ function displayPage() {
     });
 }
 
+
+// @return  promise to get a temporary clickable URL for this S3 object
+async function getTemporaryLink( bucket, key ) {
+
+  return new Promise((resolve, reject) => {
+    s3.getSignedUrl(
+      'getObject', { Bucket: bucket, Key: key, Expires: 900},  // 15 minute token
+      function( err, data ) {
+        if (err) { reject( err ); }
+        else { resolve( data ); }
+      });
+  });
+}
+
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function displayAlbums( albumData, elementId ) {
@@ -116,11 +142,13 @@ function displayAlbums( albumData, elementId ) {
 //----------------------------------------------------------------------
 // display only the files in this directory (not other albums or nested files)
 //----------------------------------------------------------------------
-function displayPhotos( files, bucketUrl, elementId ) {
+async function displayPhotos( files, bucketUrl, elementId ) {
 
   let anyPhotos = false;
 
-  var photos = files.map( function( photo ) {
+  // need Promise.all because calling S3 on each elemrnt in array
+  // can we do a batch instead?  FIXME
+  var photos = await Promise.all( files.map( async function( photo ) {
     var photoKey = photo.Key;
     // skip dot files and $folder$ files (others?)
     if (photoKey.match( /\/\./ ) ||
@@ -134,11 +162,18 @@ function displayPhotos( files, bucketUrl, elementId ) {
 
     anyPhotos = true;
 
-    var photoUrl = bucketUrl + encodeURIComponent( photoKey );
+    let photoUrl = await getTemporaryLink( albumBucketName, photoKey );
+    // let photoUrl = bucketUrl + encodeURIComponent( photoKey );
+
+    let thumbnail = "";
+    if (photoKey.endsWith("jpg")) {
+      thumbnail = '<img class="thumbnail" src="' + photoUrl + '"/>';
+    }
+
     return getHtml([
       '<div class="photo">',
       '<a href="' + photoUrl + '" target="_blank">',
-      '<img class="thumbnail" src="' + photoUrl + '"/>',
+      thumbnail,
       '<div>',
       photoKey.replace( root, ''),
       '</div>',
@@ -146,7 +181,7 @@ function displayPhotos( files, bucketUrl, elementId ) {
       '</div>',
     ]);
 
-  });
+  }));
 
   var htmlTemplate = ["Select an album"];
 
