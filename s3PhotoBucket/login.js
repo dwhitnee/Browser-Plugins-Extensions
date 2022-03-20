@@ -75,6 +75,7 @@ function doCognitoAuth( params ) {
           }
         });
 
+        // https://stackoverflow.com/questions/37179906/refresh-of-aws-config-credentials
         // maybe only necessary after an hour?
         AWS.config.credentials.refresh( (error) => {
           if (error) {

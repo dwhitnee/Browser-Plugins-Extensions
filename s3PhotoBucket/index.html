@@ -2,12 +2,15 @@
 <html>
   <head>
     <title>Photo Album Viewer</title>
-    <!-- <link rel="stylesheet" href="photos.css" /> -->
-    <link rel="stylesheet" href="//raw.githubusercontent.com/dwhitnee/Browser-Plugins-Extensions/master/s3PhotoBucket/photos.css" />
+    <link rel="stylesheet" href="//dwhitnee.github.io/Browser-Plugins-Extensions/s3PhotoBucket/photos.css" />
   </head>
 
   <body>
-    <h2>Photo Album Explorer</h2>
+      <h2>
+          Photo Album Explorer
+          <a style="font-size: small;" href="videos.html">[Home Movies]</a>
+      </h2>
+
     <div>
         <span id="breadcrumb"></span>
         <button id="backButton" onclick="history.back()">Back &#x2B90;</button>
@@ -16,9 +19,7 @@
     <div id="photos"></div>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1090.0.min.js"></script>
-
-    <!-- <script src="./photoViewer.js"></script> -->
-    <script src="//raw.githubusercontent.com/dwhitnee/Browser-Plugins-Extensions/master/s3PhotoBucket/photoViewer.js"></script>
+    <script src="//dwhitnee.github.io/Browser-Plugins-Extensions/s3PhotoBucket/photoViewer.js"></script>
 
     <script>
         // s3 bucket owner must make Cognito IdentityPool for this to work
