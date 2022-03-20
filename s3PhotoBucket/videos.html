@@ -16,13 +16,22 @@
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1090.0.min.js"></script>
     <script src="//dwhitnee.github.io/Browser-Plugins-Extensions/s3PhotoBucket/amazon-cognito-auth.min.js"></script>
+    <script src="//dwhitnee.github.io/Browser-Plugins-Extensions/s3PhotoBucket/login.js"></script>
     <script src="//dwhitnee.github.io/Browser-Plugins-Extensions/s3PhotoBucket/photoViewer.js"></script>
-   <script src="./login.js"></script>
+
+    <!-- <script src="./photoViewer.js"></script> -->
+    <!-- <script src="./login.js"></script> -->
 
     <script>
-        var s3Bucket = "dwhitnee-pictures";
-        login();
-    </script>
+       let s3Params = { Bucket: "dwhitnee-videos", region: "us-west-1"};
+      // let s3Params = { Bucket: "dwhitnee-pictures", region: "us-east-1"};
+
+       login().then( function() {
+         initS3( s3Params );
+         displayPage();
+       });
+
+   </script>
 
   </body>
 </html>
