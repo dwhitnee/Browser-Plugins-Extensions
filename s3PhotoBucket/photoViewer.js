@@ -152,7 +152,7 @@ async function displayPhotos( files, bucketUrl, elementId ) {
     var photoKey = photo.Key;
     // skip dot files and $folder$ files (others?)
     if (photoKey.match( /\/\./ ) ||
-        photoKey.match( /index/ ) ||
+        photoKey.match( /\.html/ ) ||
         photoKey.match( /\.css/ ) ||
         photoKey.match( /\.js/ ) ||
         photoKey.match( /\$folder\$/ ) )
