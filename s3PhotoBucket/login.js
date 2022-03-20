@@ -23,6 +23,8 @@
 
 //----------------------------------------------------------------------
 // Unique config for this user pool.  Should go in index.html
+// This URL must be added to Userpool/Appclient/Hosted UI/Allowed callback URLs
+//
 // @return auth promise from cognito when login complete
 //----------------------------------------------------------------------
 async function login() {
@@ -30,7 +32,7 @@ async function login() {
 
   let cognitoAppConfig = {
     ClientId: "55htjchp4ehcfa4h4usfpmdjlf",
-    UserPoolId: "us-east-1_d8ZhbRImF",
+    UserPoolId: "us-east-1_d8ZhbRImF",  // "WhitneyPhotoViewers"
     AppWebDomain: "dwhitnee-photos.auth.us-east-1.amazoncognito.com",
     TokenScopesArray: ["openid","email"],
     IdentityProvider: "COGNITO",
@@ -80,6 +82,7 @@ function doCognitoAuth( params ) {
         AWS.config.credentials.refresh( (error) => {
           if (error) {
             console.error( error );
+            auth.signOut();
             reject( error );
           } else {
             resolve();
@@ -89,6 +92,7 @@ function doCognitoAuth( params ) {
       //----------
       onFailure: function goLogin( err ) {
         console.err( err );
+        auth.signOut();
         alert( err );
         reject( err );
       }
