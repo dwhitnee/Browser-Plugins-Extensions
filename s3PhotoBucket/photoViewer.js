@@ -104,7 +104,7 @@ async function getTemporaryLink( bucket, key ) {
       function( err, data ) {
         if (err) { reject( err ); }
         else {
-          // return an "http" link because Chrome/Safari freak in CORS with https
+          // return an "http" link if localhost because CORS freaks
           // data = data.replace(/^https:\/\//i, 'http://');
           resolve( data );
         }
@@ -203,7 +203,7 @@ async function displayPhotos( files, bucketUrl, elementId ) {
 
   if (anyPhotos) {
     htmlTemplate = [
-      "Click on pictures for full resolution (captions available on Safair/Firefox, not Chrome)",
+      "Click on pictures for full resolution",
       '<div class="photoAlbum">',
       getHtml(photos),
       '</div>',
@@ -238,9 +238,15 @@ window.onerror=windowError;
 //
 // This fails silently. I can't seem to catch any errors if they occur.
 // CORS seems to fail unless "http" is used and not "https".  WTF?
-// https://zyst.io/how-to-fix-aws-s3-chrome-and-safari-cors-on-images
-//
-// img.src = url.replace(/^https:\/\//i, 'http://');
+// CORS policy cannot be allow "*". Chrome and Safari freak out.
+//  Allow host must be the specific site like
+/*
+   "AllowedOrigins": [
+      "https://s3.amazonaws.com",
+      "https://dwhitnee-pictures.s3.amazonaws.com",
+      "http://localhost"
+   ],
+*/
 //----------------------------------------------------------------------
 function getExif( imageId ) {
   var img = document.getElementById( imageId );
