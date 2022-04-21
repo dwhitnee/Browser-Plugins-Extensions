@@ -105,7 +105,7 @@ async function getTemporaryLink( bucket, key ) {
         if (err) { reject( err ); }
         else {
           // return an "http" link because Chrome/Safari freak in CORS with https
-          data = data.replace(/^https:\/\//i, 'http://');
+          // data = data.replace(/^https:\/\//i, 'http://');
           resolve( data );
         }
       });
