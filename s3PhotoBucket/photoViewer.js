@@ -233,6 +233,10 @@ window.onerror=windowError;
 // Get EXIF metadata from an <img> and display it immediately after.
 //
 // This fails silently. I can't seem to catch any errors if they occur.
+// CORS seems to fail unless "http" is used and not "https".  WTF?
+// https://zyst.io/how-to-fix-aws-s3-chrome-and-safari-cors-on-images
+//
+// img.src = url.replace(/^https:\/\//i, 'http://');
 //----------------------------------------------------------------------
 function getExif( imageId ) {
   var img = document.getElementById( imageId );
@@ -250,7 +254,8 @@ function getExif( imageId ) {
     let meta = JSON.stringify( allMetaData, null, "\t");
     console.log( meta );
 
-    var caption = document.createElement('div class="caption"');
+    var caption = document.createElement("div");
+    caption.className ="caption";
     caption.innerHTML = "Caption: " +  userComment;
     img.parentNode.parentNode.appendChild( caption );
   });

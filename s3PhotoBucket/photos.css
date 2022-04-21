@@ -37,6 +37,11 @@ button {
   width: auto;
 }
 
+.caption {
+  color: #666;
+  font-size: smaller;
+}
+
 .thumbnail {
   max-width: 25vw;
   height: auto;
