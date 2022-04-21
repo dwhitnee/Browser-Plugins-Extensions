@@ -203,7 +203,7 @@ async function displayPhotos( files, bucketUrl, elementId ) {
 
   if (anyPhotos) {
     htmlTemplate = [
-      "Click on pictures for full resolution",
+      "Click on pictures for full resolution (captions available on Safair/Firefox, not Chrome)",
       '<div class="photoAlbum">',
       getHtml(photos),
       '</div>',
