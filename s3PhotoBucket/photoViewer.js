@@ -103,7 +103,11 @@ async function getTemporaryLink( bucket, key ) {
       'getObject', { Bucket: bucket, Key: key, Expires: 900},  // 15 minute token
       function( err, data ) {
         if (err) { reject( err ); }
-        else { resolve( data ); }
+        else {
+          // return an "http" link because Chrome/Safari freak in CORS with https
+          data = data.replace(/^https:\/\//i, 'http://');
+          resolve( data );
+        }
       });
   });
 }
@@ -244,11 +248,14 @@ function getExif( imageId ) {
   EXIF.getData( img, function() {
     var allMetaData = EXIF.getAllTags( this );
 
-    let date = EXIF.getTag( this, "DateTimeOriginal");
-    let digitized = EXIF.getTag( this, "DateTimeDigitized");
+    let date =
+        EXIF.getTag( this, "DateTimeOriginal") ||
+        EXIF.getTag( this, "DateTime") ||
+        EXIF.getTag( this, "DateTimeDigitized");
+
     let userComment = EXIF.getTag( this, "UserComment") || "none";
     if (date) {
-      userComment += "(" + date + ")";
+      userComment += " (" + date + ")";
     }
 
     let meta = JSON.stringify( allMetaData, null, "\t");
