@@ -1,4 +1,4 @@
-/* global AWS */
+/* global AWS, EXIF */
 //----------------------------------------------------------------------
 // Browse hierarchical photo albums in an S3 bucket
 // 2022 David Whitney
@@ -11,6 +11,7 @@
 var s3;
 var albumBucketName;  // passed into init()
 var root = "";   // directory we are in
+let count = 0;   // for image ids
 
 // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/loading-browser-credentials-cognito.html
 
@@ -167,7 +168,18 @@ async function displayPhotos( files, bucketUrl, elementId ) {
 
     let thumbnail = "";
     if (photoKey.endsWith("jpg")) {
-      thumbnail = '<img class="thumbnail" src="' + photoUrl + '"/>';
+      // thumbnail = '<img class="thumbnail" src="' + photoUrl + '"/>';
+
+      let imageId = "photo" + ++count;
+
+      // add onLoad to get exif data (unavailable until image fully loaded)
+      thumbnail = getHtml([
+        '<img class="thumbnail"',
+        'id=' + imageId,
+        ' src="' + photoUrl + '"',
+        ' onload=getExif("'+imageId+'");',
+        '/>']);
+
     }
 
     return getHtml([
@@ -203,4 +215,43 @@ async function displayPhotos( files, bucketUrl, elementId ) {
   document.getElementById( elementId ).innerHTML = getHtml( htmlTemplate );
 
   return true;
+}
+
+
+
+// This doesn't appear to do much...
+
+function windowError(message, url, line) {
+  console.error("doh!");
+  console.error( message, url, line );
+}
+window.onerror=windowError;
+
+
+//----------------------------------------------------------------------
+// https://github.com/exif-js/exif-js
+// Get EXIF metadata from an <img> and display it immediately after.
+//
+// This fails silently. I can't seem to catch any errors if they occur.
+//----------------------------------------------------------------------
+function getExif( imageId ) {
+  var img = document.getElementById( imageId );
+
+  EXIF.getData( img, function() {
+    var allMetaData = EXIF.getAllTags( this );
+
+    let date = EXIF.getTag( this, "DateTimeOriginal");
+    let digitized = EXIF.getTag( this, "DateTimeDigitized");
+    let userComment = EXIF.getTag( this, "UserComment") || "none";
+    if (date) {
+      userComment += "(" + date + ")";
+    }
+
+    let meta = JSON.stringify( allMetaData, null, "\t");
+    console.log( meta );
+
+    var caption = document.createElement('div class="caption"');
+    caption.innerHTML = "Caption: " +  userComment;
+    img.parentNode.parentNode.appendChild( caption );
+  });
 }
