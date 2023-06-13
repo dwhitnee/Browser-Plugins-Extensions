@@ -3,6 +3,7 @@
 // @namespace     http://davidwhitney.net/projects/greasemonkey/
 // @description   Find who's going to an archery tournament
 // @include       https://usarchery.sport80.com/public/events/*
+// @include       https://nfaausa.sport80.com/public/events/*
 // ==/UserScript==
 
 
@@ -34,7 +35,22 @@
   function parseEntries( listName, listId ) {
 
     console.log( listName );
-    let list = document.getElementById( listId ).getElementsByClassName("v-list-item__title");
+
+    let menu = document.getElementById( listId );
+
+    // HACK: these menus f'ing dynamically populate so we have to
+    // scroll to the bottom to get all the items
+    menu.parentElement.scrollTo(0, 9999);
+
+    setTimeout( () => {
+      reallyParseEntries( listName, listId );
+    }, 1000);
+  }
+
+  function reallyParseEntries( listName, listId ) {
+
+    let menu = document.getElementById( listId );
+    let list = menu.getElementsByClassName("v-list-item__title");
     let entries = [];
 
     for (let i = 0; i < list.length; i++) {
@@ -55,9 +71,6 @@
           .appendChild( document.createElement("section") )
           .appendChild( document.createElement("ul") );
     html.textContent = listName;
-    let style = {
-      background: "lightblue",
-    };
 
     html.style.background = "lightblue";
     html.style.padding = "1em 2em";
@@ -70,16 +83,24 @@
     html.style.left = "20%";
     html.style.width = "60%";
 
-    for (let j=Object.keys(entryMap).length; j >= 0; j--) {
-      output = j + ":  ";
-      if (entryMap[j]) {
-        entryMap[j].forEach( division => output += division + ", ");
+    let keys = Object.keys(entryMap).reverse();
+
+    for (let j=0; j < keys.length; j++) {
+      let key = keys[j];
+      let divisions = entryMap[key];
+
+      output = key + ":  ";
+      if (divisions) {
+        divisions.forEach( division => output += division + ", ");
       } else {
         output += "none";
       }
 
       let li = document.createElement("li");
       li.textContent = output;
+      if (key == "0") {
+        li.style.fontSize = "8pt";
+      }
       html.appendChild( li );
 
       console.log( output );
