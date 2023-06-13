@@ -50,6 +50,26 @@
 
     let output = "";
 
+    const fragment = document.createDocumentFragment();
+    const html = fragment
+          .appendChild( document.createElement("section") )
+          .appendChild( document.createElement("ul") );
+    html.textContent = listName;
+    let style = {
+      background: "lightblue",
+    };
+
+    html.style.background = "lightblue";
+    html.style.padding = "1em 2em";
+    html.style.marginTop = "1em";
+    html.style.opacity = "90%";
+    html.style.border = "solid gray 4px";
+    html.style.borderRadius = "1em";
+
+    html.style.position = "relative";
+    html.style.left = "20%";
+    html.style.width = "60%";
+
     for (let j=Object.keys(entryMap).length; j >= 0; j--) {
       output = j + ":  ";
       if (entryMap[j]) {
@@ -57,8 +77,16 @@
       } else {
         output += "none";
       }
+
+      let li = document.createElement("li");
+      li.textContent = output;
+      html.appendChild( li );
+
       console.log( output );
     }
+
+    document.getElementsByTagName("header")[0].appendChild( fragment );
+//     document.body.appendChild( fragment );
   }
 
 
