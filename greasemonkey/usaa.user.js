@@ -48,13 +48,16 @@
       entryMap[number] = entryMap[number] || [];entryMap[number].push( div );
     });
 
+    let output = "";
+
     for (let j=Object.keys(entryMap).length; j >= 0; j--) {
-      console.log( j );
+      output = j + ":  ";
       if (entryMap[j]) {
-        entryMap[j].forEach(e => console.log(e));
+        entryMap[j].forEach( division => output += division + ", ");
       } else {
-        console.log("none");
+        output += "none";
       }
+      console.log( output );
     }
   }
 
