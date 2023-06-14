@@ -82,6 +82,7 @@
     html.style.position = "relative";
     html.style.left = "20%";
     html.style.width = "60%";
+    // html.style.overflowY = "scroll";  // doesn't work
 
     let keys = Object.keys(entryMap).reverse();
 
