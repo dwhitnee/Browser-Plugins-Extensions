@@ -7,6 +7,12 @@
 
 (function() {
 
+  function removeSideBars() {
+    document.querySelector("[role=complementary]").style.display="none";
+    document.querySelectorAll("[role=navigation]")[2].style.display="none";
+
+  }
+
    function addGlobalStyle(css) {
      var head, style;
      head = document.getElementsByTagName('head')[0];
@@ -26,6 +32,6 @@
      addGlobalStyle('div#globalContainer + div { display: none; }');
    }
 
-   doOnLoad();
+   removeSideBars();
 
 })();
