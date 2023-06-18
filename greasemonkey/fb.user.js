@@ -8,30 +8,40 @@
 (function() {
 
   function removeSideBars() {
-    document.querySelector("[role=complementary]").style.display="none";
-    document.querySelectorAll("[role=navigation]")[2].style.display="none";
+    let rightNav = document.querySelector("[role=complementary]");
+    let navs = document.querySelectorAll("[role=navigation]");
+    console.log("navs = " + navs.length );
 
+    if (rightNav) {
+      rightNav.style.display="none";
+    }
+
+    if (navs[2]) {
+      navs[2].style.display="none";
+    }
   }
 
-   function addGlobalStyle(css) {
-     var head, style;
-     head = document.getElementsByTagName('head')[0];
-     if (!head) { return; }
-     style = document.createElement('style');
-     style.type = 'text/css';
-     style.innerHTML = css;
-     head.appendChild(style);
-   }
+  function addGlobalStyle(css) {
+    var head, style;
+    head = document.getElementsByTagName('head')[0];
+    if (!head) { return; }
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = css;
+    head.appendChild(style);
+  }
 
-   function doOnLoad() {
-     addGlobalStyle('div#rightCol { display: none; }');
-     addGlobalStyle('div#globalContainer { margin: 0; }');
-     addGlobalStyle('div#contentArea { width: 90% !important; padding-left: 1em !important; position: inherit; }');
-     addGlobalStyle('div.mbm { margin-bottom: 3em; }');
+  function doOnLoad() {
+    addGlobalStyle('div#rightCol { display: none; }');
+    addGlobalStyle('div#globalContainer { margin: 0; }');
+    addGlobalStyle('div#contentArea { width: 90% !important; padding-left: 1em !important; position: inherit; }');
+    addGlobalStyle('div.mbm { margin-bottom: 3em; }');
 
-     addGlobalStyle('div#globalContainer + div { display: none; }');
-   }
+    addGlobalStyle('div#globalContainer + div { display: none; }');
+  }
 
-   removeSideBars();
+  setTimeout( () => {
+    removeSideBars();
+  }, 2000);
 
 })();
