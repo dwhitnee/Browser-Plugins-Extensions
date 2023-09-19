@@ -191,7 +191,7 @@
    // Clickable span in green text is child of news
    //----------------------------------------
   function clickFortunes() {
-     let fortunes = document.getElementByClassName("fortune");
+     let fortunes = document.getElementsByClassName("fortune");
 
     if (fortunes.length > 0) {
       console.log("FORTUNE! " + fortunes[0].innerText);
