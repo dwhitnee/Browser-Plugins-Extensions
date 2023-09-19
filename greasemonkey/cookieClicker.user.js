@@ -10,7 +10,7 @@
 // Cookie Clicker is the ultimate example of digital manual labor,
 // so after playing for a while I could not help but to automate the
 // things I was doing manually over and over.
-// 
+//
 // The goal here is not to outright cheat, but to take the ethos of the
 // game even farther. You click until you can hire grandmas, you hire
 // grandmas until you can get a farm, etc, etc, all the way up to
@@ -27,7 +27,7 @@
 // feel a small amount of guilt over that, but not much). Also, if
 // there is a multiplier it will cast a spell in hopes of stacking
 // effects (but only if we are at max mana because that's how I would play.)
-// 
+//
 // I don't advise blindly using this because where is the fun in that?
 // If you learn something from this, great. I did.
 //----------------------------------------------------------------------
@@ -39,26 +39,26 @@
    // Two strategies
    // 1) ConjureBakedGoods during a CpS frenzy to maximize Baked Goods effect
    // 2) ForceHandOfFate (extra magic cookie) when clicking frenzy (x777) occurs
-   //    potentially multiplying their effects.  
+   //    potentially multiplying their effects.
 
    let spellWasCast = false;
    let itsAboutTimeToCastASpell = false;
-   let spells = { 
-     0: "Conjure Baked Goods", 
+   let spells = {
+     0: "Conjure Baked Goods",
      1: "Force Hand of Fate",
      8: "Diminish Ineptitude"
    };
-   let ConjureBakedGoods = 0;   
+   let ConjureBakedGoods = 0;
    let ForceHandOfFate = 1;
    let DiminishIneptitude = 8;
 
    //------------------------------
-   // click magic cookies when they appear. If they lead to a frenzy then 
+   // click magic cookies when they appear. If they lead to a frenzy then
    // try to stack them with a spell
    //------------------------------
    function checkForCookies() {
      let cookieWrapper = document.getElementById("shimmers");
-     
+
      if (cookieWrapper && cookieWrapper.children.length) {
        console.log("COOKIE!");
        timeStamp();
@@ -84,12 +84,12 @@
        }
      }
    }
-     
+
 
    //----------------------------------------
-   // @return true if the current Golden Cookie triggered a +CpS multiplier 
+   // @return true if the current Golden Cookie triggered a +CpS multiplier
    // it's a good time to Conjure Baked Goods (30 min of CpS)
-   // 
+   //
    // x20: "Frenzy. Cookie production x7 for 2 minutes, 34 seconds"
    // x16: "Luxuriant harvest [farms/10] Cookie production +1600% for 1 minute!"
    // x20: "High-five [cursors/10] Cookie production +2000% for 1 minute!"
@@ -122,7 +122,7 @@
    function isClickingFrenzy() {
      let bonus = document.getElementById("particle0").innerText;
      return bonus.includes("Clicking power") || bonus.includes("halted") ||
-       bonus.includes("Elder frenzy"); 
+       bonus.includes("Elder frenzy");
    }
 
 
@@ -141,7 +141,7 @@
    }
 
    //----------------------------------------
-   // Check our mana. We can't if the grimoire is closed or browser window 
+   // Check our mana. We can't if the grimoire is closed or browser window
    // sleeps so the element is no longer updated.
    // @return true if magic meter is at maximum, or 30 min elapsed
    //----------------------------------------
@@ -153,7 +153,7 @@
 
      // we're either at max magic or it's been 30 minutes
      return (mana[0] == mana[1]) || itsAboutTimeToCastASpell;
-   }   
+   }
 
    //------------------------------
    // cast Conjure Baked Goods when magic is at max
@@ -163,7 +163,7 @@
        castSpell( ConjureBakedGoods );
      }
    }
-   
+
    function logEffect() {
      let notes = document.getElementById("notes");
      console.log( notes.innerText );  // log what happened
@@ -187,6 +187,20 @@
    }
 
    //----------------------------------------
+   // Check to see if there's a fortune in the news (ie, green clickable text)
+   // Clickable span in green text is child of news
+   //----------------------------------------
+  function clickFortunes() {
+     let fortunes = document.getElementByClassName("fortune");
+
+    if (fortunes.length > 0) {
+      console.log("FORTUNE! " + fortunes[0].innerText);
+      fortunes[0].click();
+      logEffect();
+     }
+   }
+
+   //----------------------------------------
    // auto click for N seconds
    //----------------------------------------
    function spamCookie( times ) {
@@ -194,9 +208,9 @@
 
      times = 100*times;     // 100 click/sec
 
-     let spammer = setInterval( 
-       function() { 
-         bigCookie.click(); 
+     let spammer = setInterval(
+       function() {
+         bigCookie.click();
          if (--times == 0) {
            clearInterval( spammer );
          }
@@ -210,7 +224,7 @@
    }
 
    //----------------------------------------
-   // if nothing happens for 30 minutes set a flag to say 
+   // if nothing happens for 30 minutes set a flag to say
    // cast a spell anyway
    //----------------------------------------
    function inactivityCheck() {
@@ -229,7 +243,8 @@
    function doOnLoad() {
      setInterval( function() { checkForCookies(); }, 1 * 1000);  // 1 sec
      setTimeout( inactivityCheck, 30 * 60 * 1000 );   // 30 min
-     setInterval( function() { checkNewsFeedForFortune(); }, 1 * 10000); // 10s
+     // setInterval( function() { checkNewsFeedForFortune(); }, 1 * 10000); // 10s
+     setInterval( function() { clickFortunes(); }, 1 * 10000); // 10s
    };
 
    // start the timers
