@@ -16,31 +16,37 @@
   function findRides() {
     console.log("Finding rides...");
 
-    let rides = document.getElementsByClassName("ground");
+    let cards = document.getElementsByClassName("card");
+    for (let c = 0; c < cards.length; c++) {
+      let rides = cards[c].getElementsByClassName("ground");
+      if (rides.length) {
+        let rideNode = rides[0].nextElementSibling;
 
-    for (var i = 0; i < rides.length; i++ ) {
-      // let parent = rides[i].getParent().getParent();
-      let rideNode = rides[i].nextElementSibling;
-
-      // print all text nodes
-      let textnode, texts = [];
-      let iter = document.createNodeIterator( rideNode, NodeFilter.SHOW_TEXT);
-      while ((textnode = iter.nextNode())) {
-        let text = textnode.textContent.trim();
-        if (text) {
-          texts.push( text );
+        // collect all text nodes under the ground transport line
+        let textnode, rideInfo = [];
+        let iter = document.createNodeIterator( rideNode, NodeFilter.SHOW_TEXT);
+        while ((textnode = iter.nextNode())) {
+          let text = textnode.textContent.trim();
+          if (text) {
+            rideInfo.push( text );
+          }
         }
+
+        let passenger = cards[c].children[1];
+        let route = cards[c].children[2];  // and maybe child 3? (outbound, return) FIXME
+
+        let name = passenger.children[0].children[1].innerText.replace(/\n/g, "");
+
+        let flight = route.children[2].children[0];
+        let date = flight.children[0].children[1].innerText;
+        let time = flight.children[1].children[1].innerText;
+        console.log( date + ": \"" + name + "\" " + rideInfo.join(" -> ") );
       }
 
-      let date = rideNode.parentElement.parentElement.parentElement.children[2].children[0].children[0].children[1].innerText; ;
-
-      console.log( date + ": " + texts.join(" -> ") );
 
       // let label = rides[i].getElementsByTagName("label")[0];
       // let listId = label.attributes["for"].value.match("input-(.*)")[1];
       // let listName = label.innerText;
-
-      // parseEntries( listName, "list-" + listId );
     };
   };
 
