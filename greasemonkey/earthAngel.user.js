@@ -15,6 +15,7 @@
   //----------------------------------------------------------------------
   function findRides() {
     console.log("Finding rides...");
+    let rideDescriptions = [];
 
     let cards = document.getElementsByClassName("card");
     for (let c = 0; c < cards.length; c++) {
@@ -40,55 +41,19 @@
         let flight = route.children[2].children[0];
         let date = flight.children[0].children[1].innerText;
         let time = flight.children[1].children[1].innerText;
-        console.log( date + ": \"" + name + "\" " + rideInfo.join(" -> ") );
+
+        rideDescriptions.push(date + " (" + time + ")" + "| \"" + name + "\" " + rideInfo.join(" -> ") );
       }
 
-
-      // let label = rides[i].getElementsByTagName("label")[0];
-      // let listId = label.attributes["for"].value.match("input-(.*)")[1];
-      // let listName = label.innerText;
-    };
-  };
-
-
-  //----------------------------------------------------------------------
-  // Sort all entries in menu into useful form
-  //----------------------------------------------------------------------
-  function parseEntries( listName, listId ) {
-
-    console.log( listName );
-
-    let menu = document.getElementById( listId );
-
-    // HACK: these menus f'ing dynamically populate so we have to
-    // scroll to the bottom to get all the items
-    menu.parentElement.scrollTo(0, 9999);
-
-    setTimeout( () => {
-      reallyParseEntries( listName, listId );
-    }, 1000);
+    }
+    displayRides( rideDescriptions );
   }
 
 
   //----------------------------------------
-  // ???
+  // Create a div to stuff output into
   //----------------------------------------
-  function reallyParseEntries( listName, listId ) {
-
-    let menu = document.getElementById( listId );
-    let list = menu.getElementsByClassName("v-list-item__title");
-    let entries = [];
-
-    for (let i = 0; i < list.length; i++) {
-      entries.push( list[i].innerText );
-    }
-
-    let entryMap = {};
-
-    entries.forEach( entry => {
-      let [x, div, number] = entry.match(/(.*) \((\d+) Entries/);
-      entryMap[number] = entryMap[number] || [];entryMap[number].push( div );
-    });
+  function displayRides( rides ) {
 
     let output = "";
 
@@ -96,7 +61,7 @@
     const html = fragment
           .appendChild( document.createElement("section") )
           .appendChild( document.createElement("ul") );
-    html.textContent = listName;
+    html.textContent = "Ground Rides";
 
     html.style.background = "lightblue";
     html.style.padding = "1em 2em";
@@ -106,34 +71,19 @@
     html.style.borderRadius = "1em";
 
     html.style.position = "relative";
-    html.style.left = "20%";
-    html.style.width = "60%";
+    html.style.left = "10%";
+    html.style.width = "80%";
     // html.style.overflowY = "scroll";  // doesn't work
 
-    let keys = Object.keys(entryMap).reverse();
-
-    for (let j=0; j < keys.length; j++) {
-      let key = keys[j];
-      let divisions = entryMap[key];
-
-      output = key + ":  ";
-      if (divisions) {
-        divisions.forEach( division => output += division + ", ");
-      } else {
-        output += "none";
-      }
-
+    for (let i=0; i < rides.length; i++) {
+      console.log( rides[i] );
       let li = document.createElement("li");
-      li.textContent = output;
-      if (key == "0") {
-        li.style.fontSize = "8pt";
-      }
+      li.textContent = rides[i];
       html.appendChild( li );
-
-      console.log( output );
     }
+    console.log( output );
 
-    document.getElementsByTagName("header")[0].appendChild( fragment );
+    document.getElementsByClassName("main-header")[0].appendChild( fragment );
 //     document.body.appendChild( fragment );
   }
 
