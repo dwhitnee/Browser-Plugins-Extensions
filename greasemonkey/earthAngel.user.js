@@ -42,7 +42,13 @@
         let date = flight.children[0].children[1].innerText;
         let time = flight.children[1].children[1].innerText;
 
-        rideDescriptions.push(date + " (" + time + ")" + "| \"" + name + "\" " + rideInfo.join(" -> ") );
+        let rideDescr = {
+          date: date,
+          time: time,
+          name: name,
+          rideInfo: rideInfo
+        };
+        rideDescriptions.push (rideDescr );
       }
 
     }
@@ -76,9 +82,12 @@
     // html.style.overflowY = "scroll";  // doesn't work
 
     for (let i=0; i < rides.length; i++) {
-      console.log( rides[i] );
+      let r = rides[i];
+      output = r.date + " (" + r.time + ")" + " | \"" + r.name + "\" " + r.rideInfo.join(" -> ");
+
+      console.log( output );
       let li = document.createElement("li");
-      li.textContent = rides[i];
+      li.textContent = output;
       html.appendChild( li );
     }
     console.log( output );
