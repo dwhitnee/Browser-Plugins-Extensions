@@ -61,6 +61,10 @@
   //----------------------------------------
   function displayRides( rides ) {
 
+    if (!rides || !rides.length) {
+      return;
+    }
+
     let output = "";
 
     const fragment = document.createDocumentFragment();
