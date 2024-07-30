@@ -20,8 +20,8 @@
     let cards = document.getElementsByClassName("card");
     for (let c = 0; c < cards.length; c++) {
       let rides = cards[c].getElementsByClassName("ground");
-      if (rides.length) {
-        let rideNode = rides[0].nextElementSibling;
+      for (let r=0; r < rides.length; r++) {
+        let rideNode = rides[r].nextElementSibling;
 
         // collect all text nodes under the ground transport line
         let textnode, rideInfo = [];
