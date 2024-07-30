@@ -33,10 +33,13 @@
           }
         }
 
+        // get flyer's name
         let passenger = cards[c].children[1];
-        let route = cards[c].children[2];  // and maybe child 3? (outbound, return) FIXME
-
         let name = passenger.children[0].children[1].innerText.replace(/\n/g, "");
+
+        // get this leg's info
+        // let route = cards[c].children[2];  // and maybe child 3? (outbound, return) FIXME
+        let route = rideNode.parentElement.parentElement.parentElement;
 
         let flight = route.children[2].children[0];
         let date = flight.children[0].children[1].innerText;
